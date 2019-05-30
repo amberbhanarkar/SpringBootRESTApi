@@ -1,0 +1,5 @@
+package com.springboot.springbootrestapi.model;
+
+public class Family {
+
+}

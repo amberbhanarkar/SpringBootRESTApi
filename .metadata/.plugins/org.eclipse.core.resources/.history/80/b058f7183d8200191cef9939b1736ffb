@@ -1,0 +1,5 @@
+package com.springboot.springbootrestapi.repository;
+
+public class OfficeRepository {
+
+}

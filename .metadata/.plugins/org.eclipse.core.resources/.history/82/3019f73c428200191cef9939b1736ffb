@@ -1,0 +1,75 @@
+package com.springboot.springbootrestapi.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.springboot.springbootrestapi.dao.FamilyDao;
+import com.springboot.springbootrestapi.model.Family;
+
+@RestController
+@RequestMapping("/stock")
+public class FamilyController {
+	
+	@Autowired
+	FamilyDao familyDao;	
+	
+	/*To create student*/
+	@PostMapping("/families")
+	public Family createFamily(@Valid @RequestBody Family fam) {
+		return familyDao.create(fam);
+	}
+	
+	/*get all students*/
+	@GetMapping("/families")
+	public List<Family> getallFamilies(){
+		return familyDao.findAll();
+	}
+	
+	/*get student by id*/
+	@GetMapping("/families/{id}")
+	public ResponseEntity<Family> getFamilyById(@PathVariable(value="id") Long famid){
+		Family fam=familyDao.findOne(famid);
+		if(fam==null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(fam);
+	}
+	
+	/*update student details*/
+	@PutMapping("/families/{id}")
+	public ResponseEntity<Family> updateFamily(@PathVariable(value="id") Long famid, @Valid @RequestBody Family famDetails){
+		Family fam=familyDao.findOne(famid);
+		if(fam==null) {
+			return ResponseEntity.notFound().build();
+		}
+		fam.setName(famDetails.getName());
+		fam.setId(famDetails.getId());
+		fam.setRole(famDetails.getRole());
+		fam.setOccupation(famDetails.getOccupation());
+		fam.setBirthDate(famDetails.getBirthDate());
+		return ResponseEntity.ok().body(updateEmployee);
+	}
+	
+	/*DElete student*/
+	@DeleteMapping("/families/{id}")
+	public ResponseEntity<Family> deleteFamily(@PathVariable(value="id") Long famid){
+		Family fam=familyDao.findOne(famid);	
+		if(fam==null) {
+			return ResponseEntity.notFound().build();
+		}
+		familyDao.delete(fam);
+		return ResponseEntity.ok().build();
+	}
+}

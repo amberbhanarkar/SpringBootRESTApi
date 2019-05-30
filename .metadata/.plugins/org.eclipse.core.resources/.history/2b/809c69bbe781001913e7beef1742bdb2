@@ -1,0 +1,5 @@
+package com.springboot.springbootrestapi.controller;
+
+public class StudentController {
+
+}
